@@ -9,13 +9,43 @@ Therefore, the shell script `conf.sh` can be use to generate a customized module
 
 ## Install
 
-#### Option1
-install your libressl to /usr/local/opt/ than installation is not required.
-Your file structure should looks like this
+To build your project linked to this module, see Build and usage.
 
+#### OS X
+```bash
+brew install libressl
+```
+as long as you have libressl installed in default path (/usr/local/opt/libressl/) you should be fine.
+
+#### Linux
+
+install libressl:
+```bash
+wget http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.4.2.tar.gz
+tar -xzvf libressl-2.4.2.tar.gz
+cd libressl-2.4.2
+./configure
+make
+sudo make install
+sudo ldconfig
+```
+
+configure module.modulemap:
+```
+cd /path/2/your/package/Packages/libressl-0.0.2/
+./conf.sh /usr/local/
+```
+
+
+#### Installer usage:
+
+##### definition
+When i mean the root of libressl, i mean the directory contains the `include` and `lib` of libressl headers and libraries
+
+For example on OSX/macOS (install with brew with default setting):
   * /usr/local/opt
 
-    * libressl <--- this is what i mean libressl root
+    * libressl <--- this
 
        * include
 
@@ -26,16 +56,29 @@ Your file structure should looks like this
          *  tls.h
 
        * lib
-         * *.so (.dylib is OSX)
+         * *.dylib
          * *.a
                   
-#### Option2 - use the script after swift build
-assume you have added this package to your swift package manager...
+on Linux (assume you follow the instruction from above):
+  * /usr/local/  <--- this
+       * include
+
+         * openssl
+
+           *  *.h
+
+         *  tls.h
+
+       * lib
+         * *.so
+         * *.a
+                 
+
+
+Now let's say you installed libressl in different directory, do the following to configure the module.modulemap
 ```bash
-> swift build
-> # error, cannot find headers/lib.....
-> cd Packages/libressl-0.0.1/ 
-> ./conf.sh /path/to/your/libressl
+> cd /path/2/your/package/Packages/libressl-0.0.1/ 
+> ./conf.sh /path/to/your/libressl_root
 ```
 
 ## Build and usage
@@ -44,5 +87,5 @@ Now you have your module.modulemap ready, in order to build your project, you'll
 
 ```bash
 > cd /to/your/swift/project
-> swift build -Xlinker -L/path/to/libressl/lib -Xcc -I/path/to/libressl/include
+> swift build -Xlinker -L/path/to/libressl_root/lib -Xcc -I/path/to/libressl_root/include
 ```
