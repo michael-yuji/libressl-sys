@@ -1,10 +1,10 @@
 
 //#define INCLUDE_ROOT /usr/local/opt/libressl/
-#define include(PATH) “INCLUDE_ROOT/include/PATH”
+#define include(PATH) "INCLUDE_ROOT/include/PATH"
 
 module libressl [system] {
  
-  header types.h
+  header "types.h"
   header include(tls.h)
   header include(openssl/ssl.h)
   header include(openssl/ossl_typ.h)
@@ -23,7 +23,7 @@ module libressl [system] {
   header include(openssl/cast.h)
   header include(openssl/chacha.h)
   header include(openssl/cmac.h)
-//  header include(openssl/cms.h)
+
   header include(openssl/comp.h)
   header include(openssl/conf_api.h)
   header include(openssl/conf.h) 
